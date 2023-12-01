@@ -1,4 +1,9 @@
 //import donnees api
+async function afficherFilms() {
+  const reponse = await fetch("http://example.com/films.json");
+  const films = await reponse.json();
+  console.log(films);
+}
 const reponse = await fetch("http://localhost:5678/api/works");
 const projets = await reponse.json();
 
