@@ -133,6 +133,7 @@ body {
   margin: auto;
   font-family: "Work Sans";
   font-size: 14px;
+  background-color: #FFFEF8;
 }
 header {
   display: flex;
@@ -174,6 +175,11 @@ nav li {
   font-size: 1.2em;
 }
 
+
+a{
+  text-decoration: none; 
+  color: inherit; 
+}
 li:hover {
   color: #b1663c;
 }
@@ -246,6 +252,43 @@ li:hover {
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
+/**/
+#login {
+  width: 50%;
+  margin: auto;
+}
+#login > * {
+  text-align: center;
+}
+#login h2 {
+  margin-bottom: 20px;
+}
+#login form {
+  text-align: left;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+#login input {
+  height: 50px;
+  font-size: 1.2em;
+  border: none;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+#login label {
+  margin: 2em 0 1em 0;
+}
+
+.lien {
+  margin: 20px;
+}
+/**/
+.inputError{
+  border:2px;
+  border-color: red;
+}
+
 input[type="submit"] {
   font-family: "Syne";
   font-weight: 700;
@@ -260,7 +303,11 @@ input[type="submit"] {
 footer nav ul {
   display: flex;
   justify-content: flex-end;
-  margin: 2em;
+  justify-items: center;
+  background-color: white;
+  height: 60px;
+  box-sizing:border-box;
+
 }
 .filtre {
   display: flex;
@@ -273,7 +320,7 @@ footer nav ul {
   font-family: "Syne";
   font-weight: 700;
   color: #1d6154;
-  background-color: white;
+  background-color: #FFFEF8;;
   margin: 1em;
   padding: 0 15px 0 15px;
   width: auto;

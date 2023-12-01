@@ -43,7 +43,6 @@ function activerBouton(bouton) {
     bouton.classList.add("active");
 }
 
-
 //boucle pour filtre
 projets.forEach((work) => {
   const categorieName = work.category.name;
@@ -77,7 +76,7 @@ function afficherProjetsFiltres(projetsFiltres) {
         const figcaptionElement = document.createElement("figcaption");
         figcaptionElement.innerText = work.title;
 
-        // Ajouter les nouveaux éléments au DOM dans la section de la galerie
+        // Ajoute des nouveaux éléments au DOM dans la section de la galerie
         figureElement.appendChild(imageElement);
         figureElement.appendChild(figcaptionElement);
         sectionPortfolio.appendChild(figureElement);
