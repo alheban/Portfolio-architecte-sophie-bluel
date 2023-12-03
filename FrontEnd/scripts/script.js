@@ -1,92 +1,103 @@
-//import donnees api
-async function afficherFilms() {
-  const reponse = await fetch("http://example.com/films.json");
-  const films = await reponse.json();
-  console.log(films);
-}
-const reponse = await fetch("http://localhost:5678/api/works");
-const projets = await reponse.json();
 
-// Sélectionner la section dans le DOM
+let listProjets = []; // Initialisation avec un tableau vide
+console.log(listProjets)
+async function getWorksApi() {
+  try {
+    const response = await fetch("http://localhost:5678/api/works");
+    const data = await response.json();
+
+    listProjets.length = 0; // Vider le tableau plutôt que de le réaffecter
+    listProjets.push(...data); // Ajouter les nouveaux projets au tableau existant
+
+    return listProjets;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des projets :", error);
+    throw error; // Propagez l'erreur pour que la promesse soit rejetée
+  }
+}
+
+
+/*------ Sélectionner la section dans le DOM-------*/
 const sectionFiltre = document.getElementById("portfolio");
 const sectionPortfolio = document.querySelector(".gallery");
 
-// creation div
-const DivFiltre = document.createElement("div");
-sectionFiltre.appendChild(DivFiltre);
-DivFiltre.classList.add("filtre");
+/*------ creation div avec les boutons filtre projet-------*/
+const divFiltre = document.createElement("div");
+divFiltre.classList.add("filtre");
+sectionFiltre.appendChild(divFiltre);
+// Ajouter la nouvelle div comme premier enfant à l'élément avec l'ID "portfolio"
+sectionFiltre.insertBefore(divFiltre, sectionFiltre.children[1]);
 
-//créer btn tous
+/* -----------------creation du bouton tous -----------------------*/
 const tousButton = document.createElement("button");
 tousButton.innerText = "Tous";
-DivFiltre.appendChild(tousButton);
+divFiltre.appendChild(tousButton);
 tousButton.classList.add("active");
 tousButton.addEventListener("click", () => {
-    afficherProjetsFiltres(projets)
-    activerBouton(tousButton);
-    
+  creerGalerieProjets(listProjets);
+  activerBouton(tousButton);
 });
 
-// Ajouter la nouvelle div comme premier enfant à l'élément avec l'ID "portfolio"
-sectionFiltre.insertBefore(DivFiltre, sectionFiltre.children[1]);
+// Appeler la fonction getWorksApi pour récupérer les projets depuis l'API
+getWorksApi().then((projetsRecuperes) => {
+  creerGalerieProjets(listProjets);
+  activerBouton(tousButton);
+  filtrerLesBouton();
 
-// Créer un ensemble pour suivre les catégoriesname déjà ajoutées
-const categoriesNameAjoutees = new Set();
+});
 
-//Filtrer les projets en fonction de la catégorie sélectionnée
-function filtrerParCategorie(categorieName) {
-    const projetsFiltres = projets.filter(work => work.category.name === categorieName);
-    afficherProjetsFiltres(projetsFiltres);
-  }
-
-
-// Fonction pour ajouter la classe "active" au bouton cliqué
-function activerBouton(bouton) {
-    // Retirer la classe "active" de tous les boutons
-    document.querySelectorAll(".filtre button").forEach(b => b.classList.remove("active"));
-    // Ajouter la classe "active" au bouton cliqué
-    bouton.classList.add("active");
-}
-
-//boucle pour filtre
-projets.forEach((work) => {
-  const categorieName = work.category.name;
-  if (!categoriesNameAjoutees.has(categorieName)) {
+/* -----------------Fonction pour creer les boutons par catégories-----------------------*/
+  function creerBoutonFiltre(categorieName) {
     const buttonFiltre = document.createElement("button");
     buttonFiltre.innerText = categorieName;
-
     buttonFiltre.addEventListener("click", () => {
-    filtrerParCategorie(categorieName);
-    activerBouton(buttonFiltre);
-
+      filtrerParCategorie(categorieName);
+      activerBouton(buttonFiltre);
+      
     });
-
-    DivFiltre.appendChild(buttonFiltre);
-    categoriesNameAjoutees.add(categorieName);
+    return buttonFiltre;
   }
 
-});
-
-// Fonction pour afficher les projets filtrés
-function afficherProjetsFiltres(projetsFiltres) {
-    // Nettoyer la section de la galerie avant d'ajouter les nouveaux projets
-    sectionPortfolio.innerHTML = '';
-
-    // Boucle galerie pour chaque projet filtré
-    projetsFiltres.forEach((work) => {
-        const figureElement = document.createElement("figure");
-        const imageElement = document.createElement("img");
-        imageElement.src = work.imageUrl;
-        imageElement.alt = work.title;
-        const figcaptionElement = document.createElement("figcaption");
-        figcaptionElement.innerText = work.title;
-
-        // Ajoute des nouveaux éléments au DOM dans la section de la galerie
-        figureElement.appendChild(imageElement);
-        figureElement.appendChild(figcaptionElement);
-        sectionPortfolio.appendChild(figureElement);
-    });
+/* -----------------Fonction pour filtrer et afficher les boutons par catégories sans doublons-----------------------*/
+function filtrerLesBouton() {
+  // Créer un ensemble pour suivre les catégoriesname déjà ajoutées
+  const categoriesNameAjoutees = new Set();
+  listProjets.forEach((workname) => {
+    const categorieName = workname.category.name;
+    if (!categoriesNameAjoutees.has(categorieName)) {
+      const buttonFiltre = creerBoutonFiltre(categorieName);
+      divFiltre.appendChild(buttonFiltre);
+      categoriesNameAjoutees.add(categorieName);
+    }
+  });
+  
 }
-afficherProjetsFiltres(projets);
+/* -----------------Fonction pour ajouter la classe "active" au bouton filtres cliqué -----------------------*/
+function activerBouton(bouton) {
+  // Retirer la classe "active" de tous les boutons
+  document.querySelectorAll(".filtre button").forEach((b) => b.classList.remove("active"));
+  bouton.classList.add("active");
+}
 
+/* -----------------Filtrer les projets en fonction de la catégorie sélectionnée -----------------------*/
+function filtrerParCategorie(categorieName) {
+  const projetsFiltres = listProjets.filter((work) => work.category.name === categorieName);
+  creerGalerieProjets(projetsFiltres);
+}
 
+/* -----------------fonction creation galerie des projets-----------------------*/
+function creerGalerieProjets(projetsgalerie) {
+  sectionPortfolio.innerHTML = ""; // Nettoyer la section de la galerie avant d'ajouter les nouveaux projets
+  // Boucle galerie pour chaque projet filtré
+  projetsgalerie.forEach((work) => {
+    const figureElement = document.createElement("figure");
+    const imageElement = document.createElement("img");
+    imageElement.src = work.imageUrl;
+    imageElement.alt = work.title;
+    const figcaptionElement = document.createElement("figcaption");
+    figcaptionElement.innerText = work.title;
+    figureElement.appendChild(imageElement);
+    figureElement.appendChild(figcaptionElement);
+    sectionPortfolio.appendChild(figureElement);
+  });
+}
