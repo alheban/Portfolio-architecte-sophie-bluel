@@ -254,8 +254,11 @@ li:hover {
 
 /**/
 #login {
-  width: 50%;
-  margin: auto;
+      margin: 0 30% 30% 30%;
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+
 }
 #login > * {
   text-align: center;
@@ -270,34 +273,53 @@ li:hover {
   flex-direction: column;
 }
 
-#login input {
-  height: 50px;
-  font-size: 1.2em;
-  border: none;
-  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
-}
+
+
 #login label {
   margin: 2em 0 1em 0;
 }
 
 .lien {
-  margin: 20px;
+  text-align: center;
+  color: #3D3D3D;
+font-family: "Work Sans";
+font-size: 14px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+text-decoration-line: underline;
 }
 /**/
-.inputError{
-  border:2px;
-  border-color: red;
+input:required{
+  height: 50px;
+  font-size: 1.2em;
+  border: none;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+  background-color: none;
 }
 
+
+.errorMessage{
+  text-align: center;
+  margin-top: 30px;
+  font-size: 16px;
+}
+
+/*-----------------*/
 input[type="submit"] {
   font-family: "Syne";
-  font-weight: 700;
+  font-size: 14px;
+font-style: normal;
+font-weight: 700;
+line-height: normal;
   color: white;
   background-color: #1d6154;
   margin: 2em auto;
   width: 180px;
   text-align: center;
   border-radius: 60px;
+  border:none;
+height: 36px;
 }
 
 footer nav ul {
@@ -337,4 +359,165 @@ footer nav ul {
 .filtre button.active {
   color: white;
   background-color: #1d6154;
+}
+
+
+
+/*_____barre edition____*/
+
+.main_barre_edition {
+  background-color: #000;
+  height: 59px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.barre_edition {
+  display: flex;
+  color: #fff;
+  align-items: center;
+  gap: 10px;
+}
+
+.barre_edition p {
+  font-family: "Work Sans";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+/*_____btn modifier____*/
+.btn_modifier {
+  display: flex;
+  align-items: center;
+  margin-bottom: 27px;
+  gap: 10px;
+}
+
+.btn_modifier p {
+  margin: 0;
+  text-decoration: none;
+  color: #000;
+  cursor: pointer;
+}
+
+.titre_projet{
+  display: flex;
+  justify-content: center;
+  gap:25px;
+}
+
+
+/*_____modal____*/
+
+.modal-container {
+  visibility: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  transition: visibility 0.4s;
+}
+.modal-container.active {
+  visibility: visible;
+  
+}
+.overlay {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #000000d3;
+  transition: opacity 0.4s 0.2s ease-out;
+}
+.modal-container.active .overlay{
+  opacity: 1;
+  transition: opacity 0.4s ease-out;
+}
+.modal{
+  opacity: 0;
+  width: 95%;
+  max-width: 550px;
+  min-width: 300px;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 10px;
+  position: absolute;
+  top:40%;
+  left: 50%;
+  transform: translate(-50%, calc(-50% + 50px));
+  transition: opacity 0.4s ease-out,
+  transform 0.4s 0.2s ease-out;
+
+}
+.modal-container.active .modal{
+opacity: 1;
+transform: translate(-50%, -50%);
+transition: opacity 0.4s 0.2s ease-out,
+transform 0.4s 0.2s ease-out;
+}
+
+.fermer-modal {
+  position: absolute;
+  top: 35px;
+  right: 35px;
+  cursor: pointer;
+}
+
+.modalTitre {
+  margin: 30px 0 45px;
+  font-family: "Work Sans";
+  font-size: 26px;
+  font-weight: 400;
+  color: #000;
+  text-align: center;
+}
+
+.gallery_modal {
+  margin: 0 60px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+hr {
+  width: 420px;
+  height: 0px;
+  border: 1px solid #B3B3B3;
+  margin: auto; 
+  margin-top: 25px; 
+  margin-bottom: 30px;
+}
+
+.btn_ajouter_photo {
+  display: flex;
+  align-items: center;
+  margin: auto;
+  border: 1px #1d6154 solid;
+  background: #1d6154;
+  color: #fff;
+  border-radius: 60px;
+  height: 36px;
+  font-family: "Syne", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  text-align: center;
+  padding: 10px 50px;
+  cursor: pointer;
+}
+
+.supprimer_modal {
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
+  font-family: "Syne", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  margin-top: 25px;
+  margin-bottom: 15px;
+  text-align: center;
+  color: #D65353;
 }

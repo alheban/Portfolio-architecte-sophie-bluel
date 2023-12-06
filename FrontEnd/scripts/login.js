@@ -1,9 +1,13 @@
 const form = document.querySelector("form");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+  const email = emailInput.value;
+  const password = passwordInput.value;
+
+
   const user = {
     email: email,
     password: password,
@@ -30,28 +34,24 @@ form.addEventListener("submit", async (event) => {
     const userId = data.userId;
 
     localStorage.setItem("token", token);
-
     form.reset();
-
     window.location.href = "index.html";
 
   } catch (error) {
-    const passwordInput = document.getElementById("password");
-    const emailInput = document.getElementById("email");
-    const existingErrorMessage = passwordInput.nextElementSibling;
+    errorMessage();
+  }
+});
 
-
-    if (!existingErrorMessage || existingErrorMessage.id !== "errorMessage") {
+function errorMessage() {
+  const existingErrorMessage = passwordInput.nextElementSibling;
+  if (!existingErrorMessage || !existingErrorMessage.classList.contains("errorMessage")) {
     const messageErreur = document.createElement("p");
     messageErreur.innerText = "Erreur dans l’identifiant ou le mot de passe";
-    messageErreur.id = "errorMessage"; 
+    messageErreur.classList.add("errorMessage");
     messageErreur.style.color = "#ff0000"; 
     passwordInput.style.border = "2px solid red";
     emailInput.style.border = "2px solid red";
-    passwordInput.parentNode.insertBefore(messageErreur,passwordInput.nextSibling);
-    }
+    passwordInput.parentNode.insertBefore(messageErreur, passwordInput.nextSibling);
   }
-});
-// Ajout d'un écouteur d'événement pour la saisie dans le champ de mot de passe
-
+}
 

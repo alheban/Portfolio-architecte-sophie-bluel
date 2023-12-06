@@ -1,6 +1,6 @@
 
 let listProjets = []; // Initialisation avec un tableau vide
-console.log(listProjets)
+
 async function getWorksApi() {
   try {
     const response = await fetch("http://localhost:5678/api/works");
@@ -12,10 +12,8 @@ async function getWorksApi() {
     return listProjets;
   } catch (error) {
     console.error("Erreur lors de la récupération des projets :", error);
-    throw error; // Propagez l'erreur pour que la promesse soit rejetée
   }
 }
-
 
 /*------ Sélectionner la section dans le DOM-------*/
 const sectionFiltre = document.getElementById("portfolio");
@@ -38,13 +36,7 @@ tousButton.addEventListener("click", () => {
   activerBouton(tousButton);
 });
 
-// Appeler la fonction getWorksApi pour récupérer les projets depuis l'API
-getWorksApi().then((projetsRecuperes) => {
-  creerGalerieProjets(listProjets);
-  activerBouton(tousButton);
-  filtrerLesBouton();
 
-});
 
 /* -----------------Fonction pour creer les boutons par catégories-----------------------*/
   function creerBoutonFiltre(categorieName) {
@@ -101,3 +93,50 @@ function creerGalerieProjets(projetsgalerie) {
     sectionPortfolio.appendChild(figureElement);
   });
 }
+/* -----------------Mode editeur-----------------------*/
+function isAuthe() {
+  let token = localStorage.getItem("token");
+  const maDivBarreEdit = document.querySelector(".main_barre_edition");
+  const maDivBtnModif = document.querySelector(".btn_modifier");
+  const modalContainer = document.querySelector(".modal-container");
+  const modalTriggers = document.querySelectorAll(".modal-trigger");
+
+  modalTriggers.forEach(trigger => trigger.addEventListener("click", toggleModal));
+
+  function toggleModal (){
+    modalContainer.classList.toggle("active");
+  }
+
+  if (token===null) {
+    console.log("Aucun token trouvé dans le localStorage");
+    maDivBarreEdit.style.display = "none";
+    maDivBtnModif.style.display = "none";
+    
+  } else {
+    console.log("Token présent :", token);
+    divFiltre.remove();
+    ajoutLogout();
+    maDivBarreEdit.style.display = "flex";
+    maDivBtnModif.style.display = "flex";
+    
+  }
+}
+function ajoutLogout() {
+  const logoutLien = document.getElementById("login-out");
+  logoutLien.innerHTML = "<li>Logout</li>";
+  logoutLien.href = "";
+  logoutLien.addEventListener("click",() => { 
+    localStorage.removeItem("token");
+
+  });
+}
+
+// Appeler la fonction getWorksApi pour récupérer les projets depuis l'API
+getWorksApi().then((projetsRecuperes) => {
+  creerGalerieProjets(listProjets);
+  activerBouton(tousButton);
+  filtrerLesBouton();
+});
+isAuthe();
+
+
