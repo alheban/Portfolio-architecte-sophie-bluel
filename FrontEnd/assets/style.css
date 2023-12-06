@@ -475,12 +475,15 @@ transform 0.4s 0.2s ease-out;
   text-align: center;
 }
 
-.gallery_modal {
+.galerie_modal {
   margin: 0 60px;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;
+}
+.galerie_modal img{
+  width: 63px; 
 }
 
 hr {

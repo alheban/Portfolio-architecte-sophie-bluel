@@ -18,6 +18,7 @@ async function getWorksApi() {
 /*------ Sélectionner la section dans le DOM-------*/
 const sectionFiltre = document.getElementById("portfolio");
 const sectionPortfolio = document.querySelector(".gallery");
+const sectionModal = document.querySelector(".galerie_modal");
 
 /*------ creation div avec les boutons filtre projet-------*/
 const divFiltre = document.createElement("div");
@@ -91,6 +92,14 @@ function creerGalerieProjets(projetsgalerie) {
     figureElement.appendChild(imageElement);
     figureElement.appendChild(figcaptionElement);
     sectionPortfolio.appendChild(figureElement);
+
+    //galerie modal
+    const figureModalElement = document.createElement("figure");
+    const imageModalElement = document.createElement("img");
+    imageModalElement.src = work.imageUrl;
+    sectionModal.appendChild(figureModalElement);
+    figureModalElement.appendChild(imageModalElement);
+
   });
 }
 /* -----------------Mode editeur-----------------------*/
