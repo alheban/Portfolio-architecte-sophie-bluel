@@ -519,18 +519,6 @@ hr {
   cursor: pointer;
 }
 
-.supprimer_modal {
-  display: flex;
-  justify-content: center;
-  text-decoration: none;
-  font-family: "Syne", sans-serif;
-  font-weight: 400;
-  font-size: 14px;
-  margin-top: 25px;
-  margin-bottom: 15px;
-  text-align: center;
-  color: #D65353;
-}
 .btndelete{
   width: 17px;
   height: 17px;

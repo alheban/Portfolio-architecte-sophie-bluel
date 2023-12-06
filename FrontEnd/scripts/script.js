@@ -74,6 +74,7 @@ function filtrerParCategorie(categorieName) {
   const projetsFiltres = listProjets.filter((work) => work.category.name === categorieName);
   creerGalerieProjets(projetsFiltres);
 }
+/*import {filtrerParCategorie} from "./utils.js"*/
 
 //fonction creation galerie des projets
 function creerGalerieProjets(projetsgalerie) {
