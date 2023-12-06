@@ -171,8 +171,15 @@ nav ul {
   list-style-type: none;
 }
 nav li {
-  padding: 0 10px;
-  font-size: 1.2em;
+  padding: 0 20px;
+font-size: 16px;
+font-weight: 400;
+
+}
+
+.lienNavLogin{
+font-size: 16px;
+font-weight: 600;
 }
 
 
@@ -482,7 +489,7 @@ transform 0.4s 0.2s ease-out;
   flex-wrap: wrap;
   gap: 10px;
 }
-.galerie_modal img{
+.imageModal{
   width: 63px; 
 }
 
@@ -524,3 +531,11 @@ hr {
   text-align: center;
   color: #D65353;
 }
+.btndelete{
+  width: 17px;
+  height: 17px;
+  padding-left:42px;
+  padding-top:4px;
+  position: absolute;
+  cursor: pointer;
+  }
