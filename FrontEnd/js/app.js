@@ -1,4 +1,3 @@
-
 async function getWorksApi() {
   try {
     const response = await fetch("http://localhost:5678/api/works");
@@ -20,9 +19,8 @@ const sectionFiltre = document.getElementById("portfolio");
 const sectionPortfolio = document.querySelector(".gallery");
 const sectionModal = document.querySelector(".galerie_modal");
 
-
 /*------ boutons pour filtrer projet-----------------------*/
-//creation div avec les boutons filtre 
+//creation div avec les boutons filtre
 const divFiltre = document.createElement("div");
 divFiltre.classList.add("filtre");
 sectionFiltre.appendChild(divFiltre);
@@ -50,28 +48,31 @@ function filtrerLesBouton() {
       categoriesNameAjoutees.add(categorieName);
     }
   });
-  
 }
 //Fonction pour creer les boutons par catégories
-  function creerBoutonFiltre(categorieName) {
-    const buttonFiltre = document.createElement("button");
-    buttonFiltre.innerText = categorieName;
-    buttonFiltre.addEventListener("click", () => {
-      filtrerParCategorie(categorieName);
-      activerBouton(buttonFiltre);     
-    });
-    return buttonFiltre;
-  }
+function creerBoutonFiltre(categorieName) {
+  const buttonFiltre = document.createElement("button");
+  buttonFiltre.innerText = categorieName;
+  buttonFiltre.addEventListener("click", () => {
+    filtrerParCategorie(categorieName);
+    activerBouton(buttonFiltre);
+  });
+  return buttonFiltre;
+}
 
 //Fonction activer la classe "active" au bouton
 function activerBouton(bouton) {
-  document.querySelectorAll(".filtre button").forEach((b) => b.classList.remove("active"));
+  document
+    .querySelectorAll(".filtre button")
+    .forEach((b) => b.classList.remove("active"));
   bouton.classList.add("active");
 }
 /* -----------------galerie----------------------------------*/
 //Filtrer les projets en fonction de la catégorie sélectionnée
 function filtrerParCategorie(categorieName) {
-  const projetsFiltres = listProjets.filter((work) => work.category.name === categorieName);
+  const projetsFiltres = listProjets.filter(
+    (work) => work.category.name === categorieName
+  );
   creerGalerieProjets(projetsFiltres);
 }
 /*import {filtrerParCategorie} from "./utils.js"*/
@@ -81,7 +82,8 @@ function creerGalerieProjets(projetsgalerie) {
   sectionPortfolio.innerHTML = ""; // Nettoyer la section de la galerie avant d'ajouter les nouveaux projets
   sectionModal.innerHTML = "";
 
-  projetsgalerie.forEach((work) => { // Boucle galerie pour chaque projet filtré
+  projetsgalerie.forEach((work) => {
+    // Boucle galerie pour chaque projet filtré
     const figureElement = document.createElement("figure");
     const imageElement = document.createElement("img");
     imageElement.src = work.imageUrl;
@@ -95,17 +97,20 @@ function creerGalerieProjets(projetsgalerie) {
     //galerie modal
     const figureModalElement = document.createElement("figure");
     const imageModalElement = document.createElement("img");
-    imageModalElement.classList.add ("imageModal")
+    imageModalElement.classList.add("imageModal");
     imageModalElement.src = work.imageUrl;
     sectionModal.appendChild(figureModalElement);
     figureModalElement.appendChild(imageModalElement);
- //btn delete
- const btnPath = "./assets/icons/delete.svg"; 
- const btnDeleteElement = document.createElement("img");
- btnDeleteElement.classList.add ("btndelete");
- btnDeleteElement.src = btnPath;
- figureModalElement.appendChild(btnDeleteElement);
- figureModalElement.insertBefore(btnDeleteElement, figureModalElement.firstChild);
+    //btn delete
+    const btnPath = "./assets/icons/delete.svg";
+    const btnDeleteElement = document.createElement("img");
+    btnDeleteElement.classList.add("btndelete");
+    btnDeleteElement.src = btnPath;
+    figureModalElement.appendChild(btnDeleteElement);
+    figureModalElement.insertBefore(
+      btnDeleteElement,
+      figureModalElement.firstChild
+    );
   });
 }
 
@@ -115,44 +120,57 @@ function isAuthe() {
   const maDivBarreEdit = document.querySelector(".main_barre_edition");
   const maDivBtnModif = document.querySelector(".btn_modifier");
 
-  
-  const modalContainer = document.querySelector(".modal-container");
   const modalTriggers = document.querySelectorAll(".modal-trigger");
+  modalTriggers.forEach((trigger) =>
+    trigger.addEventListener("click", toggleModal)
+  );
 
-  modalTriggers.forEach(trigger => trigger.addEventListener("click", toggleModal));
+  const modalContainer = document.querySelector(".modal-container");
+  const modalAdd = document.querySelector(".modal-add");
+  const modal = document.querySelector(".modal");
 
-  function toggleModal (){
+  function toggleModal() {
     modalContainer.classList.toggle("active");
+    modal.style.display = "block";
+    modalAdd.style.display = "none";
   }
 
+  const arrowModalElement = document.querySelector(".arrow-modal");
+  arrowModalElement.addEventListener("click", afficherModal);
 
-  if (token===null) {
+  function afficherModal() {
+    modal.style.display = "block";
+    modalAdd.style.display = "none";
+  }
+
+  const boutonAjouterPhoto = document.querySelector(".btn_ajouter_photo");
+  boutonAjouterPhoto.addEventListener("click", afficherAjoutImageModal);
+
+  function afficherAjoutImageModal() {
+    modalAdd.style.display = "block";
+    modal.style.display = "none";
+  }
+
+  if (token === null) {
     console.log("Aucun token trouvé dans le localStorage");
     maDivBarreEdit.style.display = "none";
     maDivBtnModif.style.display = "none";
-    
   } else {
     console.log("Token présent :", token);
     divFiltre.remove();
     ajoutLogout();
     maDivBarreEdit.style.display = "flex";
     maDivBtnModif.style.display = "flex";
-    
   }
 }
 function ajoutLogout() {
   const logoutLien = document.getElementById("login-out");
   logoutLien.innerHTML = "<li>Logout</li>";
   logoutLien.href = "";
-  logoutLien.addEventListener("click",() => { 
+  logoutLien.addEventListener("click", () => {
     localStorage.removeItem("token");
   });
 }
-function OuvrirModalAdd(){
-  const btnAjouterPhoto = document.querySelector(".btn_ajouter_photo")
-  btnAjouterPhoto.addEventListener("click",)
-}
-
 
 // Appeler la fonction getWorksApi pour récupérer les projets depuis l'API
 getWorksApi().then((projetsRecuperes) => {
@@ -161,5 +179,3 @@ getWorksApi().then((projetsRecuperes) => {
   filtrerLesBouton();
 });
 isAuthe();
-
-

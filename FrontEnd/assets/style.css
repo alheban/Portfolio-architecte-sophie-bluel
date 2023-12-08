@@ -432,8 +432,11 @@ footer nav ul {
   opacity: 1;
   transition: opacity 0.4s ease-out;
 }
+
+
 .modal,
 .modal-add {
+  display: block;
   opacity: 0;
   width: 690px;
   width: 688px;
@@ -448,6 +451,7 @@ footer nav ul {
   transform: translate(-50%, calc(-50% + 50px));
   transition: opacity 0.4s ease-out, transform 0.4s 0.2s ease-out;
 }
+
 .modal-container.active .modal,
 .modal-container.active .modal-add {
   opacity: 1;
