@@ -114,6 +114,8 @@ function isAuthe() {
   let token = localStorage.getItem("token");
   const maDivBarreEdit = document.querySelector(".main_barre_edition");
   const maDivBtnModif = document.querySelector(".btn_modifier");
+
+  
   const modalContainer = document.querySelector(".modal-container");
   const modalTriggers = document.querySelectorAll(".modal-trigger");
 
@@ -122,6 +124,7 @@ function isAuthe() {
   function toggleModal (){
     modalContainer.classList.toggle("active");
   }
+
 
   if (token===null) {
     console.log("Aucun token trouvé dans le localStorage");
@@ -144,6 +147,10 @@ function ajoutLogout() {
   logoutLien.addEventListener("click",() => { 
     localStorage.removeItem("token");
   });
+}
+function OuvrirModalAdd(){
+  const btnAjouterPhoto = document.querySelector(".btn_ajouter_photo")
+  btnAjouterPhoto.addEventListener("click",)
 }
 
 
