@@ -612,3 +612,16 @@ select {
   background-repeat: no-repeat;
   background-position: right 20px center; /* Ajustez la position de l'image */
 }
+
+
+.block {
+  display: block;
+}
+
+.none {
+  display: none;
+}
+
+.flex {
+  display: flex;
+}

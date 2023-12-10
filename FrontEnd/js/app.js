@@ -1,18 +1,5 @@
-async function getWorksApi() {
-  try {
-    const response = await fetch("http://localhost:5678/api/works");
-    const data = await response.json();
 
-    listProjets.length = 0; // Vider le tableau plutôt que de le réaffecter
-    listProjets.push(...data); // Ajouter les nouveaux projets au tableau existant
-
-    return listProjets;
-  } catch (error) {
-    console.error("Erreur lors de la récupération des projets :", error);
-  }
-}
-
-let listProjets = []; // Initialisation avec un tableau vide
+import { YourApiClass } from './api.js';
 
 /*------ Sélectionner la section dans le DOM-------*/
 const sectionFiltre = document.getElementById("portfolio");
@@ -32,7 +19,7 @@ tousButton.innerText = "Tous";
 divFiltre.appendChild(tousButton);
 tousButton.classList.add("active");
 tousButton.addEventListener("click", () => {
-  creerGalerieProjets(listProjets);
+  creerGalerieProjets(apiInstance.listeProjets);
   activerBouton(tousButton);
 });
 
@@ -40,7 +27,7 @@ tousButton.addEventListener("click", () => {
 function filtrerLesBouton() {
   // Créer un ensemble pour suivre les catégoriesname déjà ajoutées
   const categoriesNameAjoutees = new Set();
-  listProjets.forEach((workname) => {
+  apiInstance.listeProjets.forEach((workname) => {
     const categorieName = workname.category.name;
     if (!categoriesNameAjoutees.has(categorieName)) {
       const buttonFiltre = creerBoutonFiltre(categorieName);
@@ -70,7 +57,7 @@ function activerBouton(bouton) {
 /* -----------------galerie----------------------------------*/
 //Filtrer les projets en fonction de la catégorie sélectionnée
 function filtrerParCategorie(categorieName) {
-  const projetsFiltres = listProjets.filter(
+  const projetsFiltres = apiInstance.listeProjets.filter(
     (work) => work.category.name === categorieName
   );
   creerGalerieProjets(projetsFiltres);
@@ -131,36 +118,49 @@ function isAuthe() {
 
   function toggleModal() {
     modalContainer.classList.toggle("active");
-    modal.style.display = "block";
-    modalAdd.style.display = "none";
+    if (modalContainer.classList.contains("active")) {
+        afficherModal();
+    }else{
+      effacerModal();
+    }
   }
+  function afficherModal() {
+    modal.classList.add("block");
+    modalAdd.classList.remove("block");
+    modal.classList.remove("none");
+    modalAdd.classList.add("none");
+}
+
+function effacerModal() {
+    modal.classList.remove("block");
+    modalAdd.classList.remove("block");
+    modal.classList.add("none");
+    modalAdd.classList.add("none");
+}
 
   const arrowModalElement = document.querySelector(".arrow-modal");
   arrowModalElement.addEventListener("click", afficherModal);
-
-  function afficherModal() {
-    modal.style.display = "block";
-    modalAdd.style.display = "none";
-  }
 
   const boutonAjouterPhoto = document.querySelector(".btn_ajouter_photo");
   boutonAjouterPhoto.addEventListener("click", afficherAjoutImageModal);
 
   function afficherAjoutImageModal() {
-    modalAdd.style.display = "block";
-    modal.style.display = "none";
-  }
+    effacerModal();
+    modal.classList.add("none");
+    modalAdd.classList.remove("none");
+    modalAdd.classList.add("block");
+}
 
   if (token === null) {
     console.log("Aucun token trouvé dans le localStorage");
-    maDivBarreEdit.style.display = "none";
-    maDivBtnModif.style.display = "none";
+    maDivBarreEdit.classList.add("none")
+    maDivBtnModif.classList.add("none")
   } else {
     console.log("Token présent :", token);
     divFiltre.remove();
     ajoutLogout();
-    maDivBarreEdit.style.display = "flex";
-    maDivBtnModif.style.display = "flex";
+    maDivBarreEdit.classList.add("flex")
+    maDivBtnModif.classList.add("flex")
   }
 }
 function ajoutLogout() {
@@ -173,9 +173,11 @@ function ajoutLogout() {
 }
 
 // Appeler la fonction getWorksApi pour récupérer les projets depuis l'API
-getWorksApi().then((projetsRecuperes) => {
-  creerGalerieProjets(listProjets);
+const apiInstance = new YourApiClass("http://localhost:5678/api");
+
+apiInstance.getWorksApi().then((projetsRecuperes) => {
+  creerGalerieProjets(projetsRecuperes);
   activerBouton(tousButton);
-  filtrerLesBouton();
+  filtrerLesBouton(apiInstance.listeProjets);
 });
 isAuthe();

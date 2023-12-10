@@ -1,42 +1,22 @@
+import { YourApiClass } from './api.js';
 const form = document.querySelector("form");
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
+
+const apiInstance = new YourApiClass("http://localhost:5678/api");
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   const email = emailInput.value;
   const password = passwordInput.value;
 
-
-  const user = {
-    email: email,
-    password: password,
-  };
-  const chargeUtile = JSON.stringify(user);
-
   try {
-    // Appel à l'API pour uploader les données du formulaire
-    const response = await fetch("http://localhost:5678/api/users/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: chargeUtile,
-    });
+    const loginResult = await apiInstance.loginUser(email, password);
 
-    if (!response.ok) {
-      // Gérer les erreurs HTTP
-      throw new Error("Erreur HTTP : " + response.status);
+    if (loginResult.success) {
+      form.reset();
+      window.location.href = "index.html";
     }
-
-    const data = await response.json();
-    const token = data.token;
-    const userId = data.userId;
-
-    localStorage.setItem("token", token);
-    form.reset();
-    window.location.href = "index.html";
-
   } catch (error) {
     errorMessage();
   }
