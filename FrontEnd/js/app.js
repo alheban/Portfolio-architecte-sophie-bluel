@@ -1,6 +1,6 @@
 
 import { YourApiClass } from './api.js';
-
+import { createElement } from './utils.js';
 /*------ Sélectionner la section dans le DOM-------*/
 const sectionFiltre = document.getElementById("portfolio");
 const sectionPortfolio = document.querySelector(".gallery");
@@ -10,12 +10,26 @@ const sectionModal = document.querySelector(".galerie_modal");
 //creation div avec les boutons filtre
 const divFiltre = document.createElement("div");
 divFiltre.classList.add("filtre");
-sectionFiltre.appendChild(divFiltre);
+//sectionFiltre.appendChild(divFiltre);
 sectionFiltre.insertBefore(divFiltre, sectionFiltre.children[1]);
 
+// Création de la section de filtre
+const sectionDesFiltre = createElement({
+  tag: "div",
+  className: "filtre",
+  whereAppend: sectionFiltre
+});
+
+// Création du bouton "Tous"
+const tousButton = createElement({
+  tag: "button",
+  text: "Tous",
+  className: "active",
+  whereAppend: sectionFiltre
+});
 //creation du bouton tous
-const tousButton = document.createElement("button");
-tousButton.innerText = "Tous";
+//const tousButton = document.createElement("button");
+//tousButton.innerText = "Tous";
 divFiltre.appendChild(tousButton);
 tousButton.classList.add("active");
 tousButton.addEventListener("click", () => {
@@ -38,8 +52,14 @@ function filtrerLesBouton() {
 }
 //Fonction pour creer les boutons par catégories
 function creerBoutonFiltre(categorieName) {
-  const buttonFiltre = document.createElement("button");
-  buttonFiltre.innerText = categorieName;
+  const buttonFiltre = createElement({
+    tag: "button",
+    text: categorieName,
+    className: "filtre",
+    whereAppend: divFiltre
+});
+  //const buttonFiltre = document.createElement("button");
+  ///buttonFiltre.innerText = categorieName;
   buttonFiltre.addEventListener("click", () => {
     filtrerParCategorie(categorieName);
     activerBouton(buttonFiltre);
