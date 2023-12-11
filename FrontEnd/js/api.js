@@ -18,7 +18,7 @@
         this.listeProjets.length = 0;
         this.listeProjets.push(...data);
   
-        console.log(this.listProjets);
+        //console.log(this.listProjets);
   
         return this.listeProjets;
       } catch (error) {

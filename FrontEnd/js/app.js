@@ -8,9 +8,17 @@ const sectionModal = document.querySelector(".galerie_modal");
 
 /*------ boutons pour filtrer projet-----------------------*/
 //creation div avec les boutons filtre
-const divFiltre = document.createElement("div");
-divFiltre.classList.add("filtre");
+//const divFiltre = document.createElement("div");
+//divFiltre.classList.add("filtre");
 //sectionFiltre.appendChild(divFiltre);
+
+const divFiltre = createElement({
+  tag: "div",
+  text:"",
+  className: "filtre",
+  whereAppend: sectionFiltre
+});
+
 sectionFiltre.insertBefore(divFiltre, sectionFiltre.children[1]);
 
 // Création de la section de filtre
@@ -82,10 +90,80 @@ function filtrerParCategorie(categorieName) {
   );
   creerGalerieProjets(projetsFiltres);
 }
-/*import {filtrerParCategorie} from "./utils.js"*/
 
 //fonction creation galerie des projets
 function creerGalerieProjets(projetsgalerie) {
+  sectionPortfolio.innerHTML = ""; // Nettoyer la section de la galerie avant d'ajouter les nouveaux projets
+  sectionModal.innerHTML = "";
+
+  projetsgalerie.forEach((work) => {
+
+      // Boucle galerie pour chaque projet filtré
+      const figureElement = createElement({
+          tag: "figure",
+          text: "",
+          whereAppend: sectionPortfolio
+      });
+
+      // Vérifier que work.title est défini avant de l'utiliser
+      const imageElement = createElement({
+          tag: "img",
+          whereAppend: figureElement
+      });
+      if (work.title) {
+          imageElement.alt = work.title;
+      }
+
+      // Vérifier que work.imageUrl est défini avant de l'utiliser
+      if (work.imageUrl) {
+          imageElement.src = work.imageUrl;
+      }
+
+      const figcaptionElement = createElement({
+          tag: "figcaption",
+          text: work.title || "",
+          whereAppend: figureElement
+      });
+
+      // Ajoutez les éléments à la structure HTML
+      figureElement.appendChild(imageElement);
+      figureElement.appendChild(figcaptionElement);
+
+      //galerie modal
+      const figureModalElement = createElement({
+          tag: "figure",
+          text:"",
+          whereAppend: sectionModal
+      });
+
+      // Vérifier que work.imageUrl est défini avant de l'utiliser
+      const imageModalElement = createElement({
+          tag: "img",
+          className: "imageModal",
+          whereAppend: figureModalElement
+      });
+      if (work.imageUrl) {
+          imageModalElement.src = work.imageUrl;
+      }
+
+      // Ajoutez les éléments à la structure HTML
+      figureModalElement.appendChild(imageModalElement);
+
+      //btn delete
+      const btnPath = "./assets/icons/delete.svg";
+      const btnDeleteElement = createElement({
+          tag: "img",
+          className: "btndelete",
+          whereAppend: figureModalElement
+      });
+      btnDeleteElement.src = btnPath;
+
+      // Ajouter le bouton delete à la structure HTML
+      figureModalElement.insertBefore(btnDeleteElement, figureModalElement.firstChild);
+  });
+}
+//fonction creation galerie des projets
+/*function creerGalerieProjets(projetsgalerie) {
   sectionPortfolio.innerHTML = ""; // Nettoyer la section de la galerie avant d'ajouter les nouveaux projets
   sectionModal.innerHTML = "";
 
@@ -119,7 +197,7 @@ function creerGalerieProjets(projetsgalerie) {
       figureModalElement.firstChild
     );
   });
-}
+}*/
 
 /* -----------------Mode editeur-----------------------*/
 function isAuthe() {
