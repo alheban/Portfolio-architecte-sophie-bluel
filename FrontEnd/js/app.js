@@ -154,9 +154,6 @@ function creerModal(work) {
           event.target.parentElement.remove();
           apiInstance.getWorksApi().then((projetsRecuperes) => {
             creerGalerieProjets(projetsRecuperes);
-            btnTous();
-            filtrerLesBouton(apiInstance);
-            isAuthe();
           });
 
           console.log(`Le travail avec l'ID ${idToDelete} a été supprimé.`);
