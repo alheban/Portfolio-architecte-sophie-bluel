@@ -12,7 +12,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@500&display=swap" rel="stylesheet">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
-	<script type="module" src="./js/app.js" defer></script>
+	<script src="./js/app.js" type="module"></script>
 </head>
 
 <body>
@@ -27,11 +27,11 @@
 
 	<aside class="modal-container">
 		<div class="overlay modal-trigger"></div>
-		<div class="modal" role="dialog" aria-labelledby="modalTitle">
+		<div class="modal" role="dialog">
 			<img src="assets/icons/fermer.svg" alt="fermer" class="fermer-modal modal-trigger">
 			<h2 class="modalTitre">Galerie photo</h2>
 			<div class="galerie_modal"></div>
-			<hr />
+			<hr/>
 			<button class="btn_ajouter_photo">Ajouter une photo</button>
 
 		</div>
@@ -45,6 +45,7 @@
 					<span class="btn_add_photo">+ Ajouter photo</span>
 					<span class="text_format">jpg, png: 4mo max</span>
 				</label>
+				<input type="file" id="file" name="file" style="display: none;">
 				<label for="titre_img">Titre</label>
 				<input type="text" id="titre_img" name="titre_img">
 				<label for="categories">Catégories</label>
@@ -62,9 +63,8 @@
 			<ul>
 				<li>projets</li>
 				<li>contact</li>
-				<a href="login.html" id="login-out">
-					<li>login</li>
-				</a>
+				
+					<li><a href="login.html" id="login-out">login</a></li>
 				<li><img src="./assets/icons/instagram.svg" alt="Instagram"></li>
 			</ul>
 		</nav>
@@ -88,7 +88,7 @@
 		<section id="portfolio">
 			<div class="titre_projet">
 				<h2>Mes Projets</h2>
-				<div class="btn_modifier modal-trigger">
+				<div class="btn_modifier modal-trigger none">
 					<img src="./assets/icons/crayon_noir.svg" alt="">
 					<p>modifier</p>
 				</div>

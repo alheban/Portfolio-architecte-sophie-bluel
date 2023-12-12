@@ -1,3 +1,4 @@
+
 export function createElement(args) {
   const element = document.createElement(args.tag);
   element.innerText = args.text;
@@ -18,4 +19,23 @@ export function createElement(args) {
 
   return element;
 }
+
+  // Fonction pour ajouter une classe à un élément
+ export function addClass(element, className) {
+    element.classList.add(className);
+  }
+
+  // Fonction pour supprimer une classe d'un élément
+ export function removeClass(element, className) {
+    element.classList.remove(className);
+  }
+
+ export function ajoutLogout() {
+    const logoutLien = document.getElementById("login-out");
+    logoutLien.innerHTML = "<li>Logout</li>";
+    logoutLien.href = "";
+    logoutLien.addEventListener("click", () => {
+      localStorage.removeItem("token");
+    });
+  }
 
