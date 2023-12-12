@@ -2,6 +2,7 @@ export class YourApiClass {
   constructor(baseUrl) {
     this.baseUrl = baseUrl;
     this.listeProjets = [];
+    this.listeCategories = [];
   }
 
   async getWorksApi() {
@@ -20,6 +21,28 @@ export class YourApiClass {
       //console.log(this.listProjets);
 
       return this.listeProjets;
+    } catch (error) {
+      console.error("Erreur lors de la récupération des projets :", error);
+      throw error;
+    }
+  }
+
+  async getCategoriesApi() {
+    try {
+      const response = await fetch(this.baseUrl + "/categories");
+
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP! Statut : ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      this.listeCategories.length = 0;
+      this.listeCategories.push(...data);
+
+      //console.log(this.listProjets);
+
+      return this.listeCategories;
     } catch (error) {
       console.error("Erreur lors de la récupération des projets :", error);
       throw error;

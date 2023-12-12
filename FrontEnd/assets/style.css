@@ -625,3 +625,9 @@ select {
 .flex {
   display: flex;
 }
+
+.img_uploaded {
+  display: block;
+  margin: auto;
+  height: 169px;
+  width: auto;}
