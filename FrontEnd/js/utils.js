@@ -8,16 +8,14 @@ export function createElement(args) {
   if (args.text) {
     element.innerText = args.text;
   }
-
   // Ajouter la classe si elle est définie
   if (args.className) {
     element.classList.add(args.className);
   }
-
   if (args.whereAppend) {
     args.whereAppend.appendChild(element);
   }
-
+  args.whereAppend.insertBefore(element, args.whereAppend.children[1]);
   return element;
 }
 
@@ -61,3 +59,13 @@ export function createElement(args) {
   }
 
 
+/*------ section filtre boutons-----------------------*/
+
+
+//Fonction activer la classe "active" au bouton
+export function activateButton(bouton) {
+  document
+    .querySelectorAll(".filtre button")
+    .forEach((b) => b.classList.remove("active"));
+  bouton.classList.add("active");
+}

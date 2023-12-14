@@ -1,62 +1,45 @@
-import { YourApiClass } from "./api.js";
-import { createElement, ajoutLogout, addClass, removeClass, isAuthe} from "./utils.js";
-import { sectionFiltre,sectionPortfolio,sectionModal,divFiltre } from "./dom.js";
 
+import { createElement, ajoutLogout, addClass, removeClass, isAuthe, activateButton } from "./utils.js";
+import { sectionFiltre,sectionPortfolio,sectionModal,divFiltre,tousButton,apiInstance} from "./dom.js";
 
-export const apiInstance = new YourApiClass("http://localhost:5678/api");
 
 /*------ section filtre boutons-----------------------*/
 
 sectionFiltre.insertBefore(divFiltre, sectionFiltre.children[1]);
-
-function btnTous(){
-const tousButton = createElement({
-  tag: "button",
-  text: "Tous",
-  className: "active",
-  whereAppend: sectionFiltre,
-});
+//Fonction pour creer btntous et afficher la galerie
 tousButton.addEventListener("click", (e) => {
   e.preventDefault();
-  creerGalerieProjets(apiInstance.listeProjets);
-  activerBouton(tousButton);
+  createProjectGallery(apiInstance.listeProjets);
+  activateButton(tousButton);
 });
 divFiltre.appendChild(tousButton);
 tousButton.classList.add("active");
 
-}
-//Fonction activer la classe "active" au bouton
-function activerBouton(bouton) {
-  document
-    .querySelectorAll(".filtre button")
-    .forEach((b) => b.classList.remove("active"));
-  bouton.classList.add("active");
-}
-//Fonction pour creer btn et filtrer galerie
-function creerBoutonFiltre(categorieName) {
-  const buttonFiltre = createElement({
+//Fonction pour creer btnCategorie et filtrer galerie
+function createAndActivateFilterButton(categorieName) {
+  const btnFilter = createElement({
     tag: "button",
     text: categorieName,
     className: "filtre",
     whereAppend: divFiltre,
   });
 
-  buttonFiltre.addEventListener("click", (event) => {
+  btnFilter.addEventListener("click", (event) => {
     event.preventDefault(); 
-    filtrerParCategorie(categorieName);
-    activerBouton(buttonFiltre);
+    filterByCategory(categorieName);
+    activateButton(btnFilter);
   });
-  return buttonFiltre;
+  return btnFilter;
 }
 
 //Fonction pour filtrer les boutons par catégories sans doublons
-function filtrerLesBouton(apiInstance) {
+function filterButtons(apiInstance) {
   // Créer un ensemble pour suivre les catégories déjà ajoutées
   const categoriesNameAjoutees = new Set();
   apiInstance.listeProjets.forEach((workname) => {
     const categorieName = workname.category.name;
     if (!categoriesNameAjoutees.has(categorieName)) {
-      const buttonFiltre = creerBoutonFiltre(categorieName, apiInstance);
+      const buttonFiltre = createAndActivateFilterButton(categorieName, apiInstance);
       divFiltre.appendChild(buttonFiltre);
       categoriesNameAjoutees.add(categorieName);
     }
@@ -64,13 +47,13 @@ function filtrerLesBouton(apiInstance) {
 }
 
 /* -----------------galerie principal ----------------------------------*/
-function filtrerParCategorie(categorieName) {
-  const projetsFiltres = apiInstance.listeProjets.filter(
+function filterByCategory(categorieName) {
+  const filteredProjects = apiInstance.listeProjets.filter(
     (work) => work.category.name === categorieName);
-  creerGalerieProjets(projetsFiltres);
+    createProjectGallery(filteredProjects);
 }
 
-export function creerGalerieProjets(projetsgalerie) {
+function createProjectGallery(projetsgalerie) {
   sectionPortfolio.innerHTML = ""; // Nettoyer la section de la galerie avant d'ajouter les nouveaux projets
   sectionModal.innerHTML = "";
 
@@ -86,6 +69,12 @@ export function creerGalerieProjets(projetsgalerie) {
       tag: "img",
       whereAppend: figureElement,
     });
+    const figcaptionElement = createElement({
+      tag: "figcaption",
+      text: work.title || "",
+      whereAppend: figureElement,
+    });
+    
     if (work.title) {
       imageElement.alt = work.title;
     }
@@ -93,16 +82,8 @@ export function creerGalerieProjets(projetsgalerie) {
     if (work.imageUrl) {
       imageElement.src = work.imageUrl;
     }
-
-    const figcaptionElement = createElement({
-      tag: "figcaption",
-      text: work.title || "",
-      whereAppend: figureElement,
-    });
-
     figureElement.appendChild(imageElement);
     figureElement.appendChild(figcaptionElement);
-
     creerModal(work);
 })
 }
@@ -151,7 +132,7 @@ function creerModal(work) {
         if (success) {
           event.target.parentElement.remove();
           apiInstance.getWorksApi().then((projetsRecuperes) => {
-            creerGalerieProjets(projetsRecuperes);
+            createProjectGallery(projetsRecuperes);
           });
         } else {
           console.error(`Échec de la suppression du travail avec l'ID ${idToDelete}.`);
@@ -338,7 +319,7 @@ const modalTriggers = document.querySelectorAll(".modal-trigger");
         const projetsRecuperes = await apiInstance.getWorksApi();
   
         // Mise à jour de la galerie des projets avec les données récentes
-        creerGalerieProjets(projetsRecuperes);
+        createProjectGallery(projetsRecuperes);
   
         // Réinitialisez le formulaire et l'état du label de fichier
         form.reset();
@@ -422,17 +403,14 @@ function validateForm() {
     <span class="btn_add_photo">+ Ajouter photo</span>
     <span class="text_format">jpg, png: 4mo max</span>
     `;
-    
-    // Réinitialiser le champ de sélection
     selectCategories.selectedIndex = 0;
     textInput.value = "";
     updateSubmitButtonState();
   }
 /* -----------------récupérer les projets depuis l'API ----------------------------------*/
 apiInstance.getWorksApi().then((projetsRecuperes) => {
-  creerGalerieProjets(projetsRecuperes);
-  btnTous();
-  filtrerLesBouton(apiInstance);
+  createProjectGallery(projetsRecuperes);
+  filterButtons(apiInstance);
   isAuthe();
 });
 
