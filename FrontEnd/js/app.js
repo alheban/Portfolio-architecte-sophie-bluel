@@ -4,7 +4,7 @@ import { createElement } from "./utils.js";
 import { sectionFiltre,sectionPortfolio,sectionModal,divFiltre } from "./dom.js";
 
 
-const apiInstance = new YourApiClass("http://localhost:5678/api");
+export const apiInstance = new YourApiClass("http://localhost:5678/api");
 
 /*------ section filtre boutons-----------------------*/
 
@@ -26,7 +26,6 @@ divFiltre.appendChild(tousButton);
 tousButton.classList.add("active");
 
 }
-
 //Fonction activer la classe "active" au bouton
 function activerBouton(bouton) {
   document
@@ -65,14 +64,14 @@ function filtrerLesBouton(apiInstance) {
   });
 }
 
-/* -----------------galerie----------------------------------*/
+/* -----------------galerie principal ----------------------------------*/
 function filtrerParCategorie(categorieName) {
   const projetsFiltres = apiInstance.listeProjets.filter(
     (work) => work.category.name === categorieName);
   creerGalerieProjets(projetsFiltres);
 }
 
-function creerGalerieProjets(projetsgalerie) {
+export function creerGalerieProjets(projetsgalerie) {
   sectionPortfolio.innerHTML = ""; // Nettoyer la section de la galerie avant d'ajouter les nouveaux projets
   sectionModal.innerHTML = "";
 
@@ -108,7 +107,7 @@ function creerGalerieProjets(projetsgalerie) {
     creerModal(work);
 })
 }
-/* -----------------galeriemodal----------------------------------*/
+/* -----------------galerie modal avec btn delete ----------------------------------*/
 function creerModal(work) {
   const figureModalElement = createElement({
     tag: "figure",
@@ -155,8 +154,6 @@ function creerModal(work) {
           apiInstance.getWorksApi().then((projetsRecuperes) => {
             creerGalerieProjets(projetsRecuperes);
           });
-
-          console.log(`Le travail avec l'ID ${idToDelete} a été supprimé.`);
         } else {
           console.error(`Échec de la suppression du travail avec l'ID ${idToDelete}.`);
         }
@@ -169,8 +166,7 @@ function creerModal(work) {
   });
 }
 
-
-// Appeler la fonction getWorksApi pour récupérer les projets depuis l'API
+/* -----------------récupérer les projets depuis l'API ----------------------------------*/
 apiInstance.getWorksApi().then((projetsRecuperes) => {
   creerGalerieProjets(projetsRecuperes);
   btnTous();

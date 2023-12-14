@@ -134,6 +134,28 @@ async deleteWorksApi(idToDelete) {
   }
 }
 
+async uploadFormDataToAPI(formData) {
+  try {
+    const response = await fetch(this.baseUrl + "/works", {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.token,
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(`Erreur HTTP! Statut : ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error("Une erreur s'est produite lors de l'appel à l'API :", error);
+  }
+}
+
 }
 
 
