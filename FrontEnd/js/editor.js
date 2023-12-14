@@ -195,8 +195,8 @@ export function isAuthe() {
   // Ajoutez un écouteur d'événements au bouton de soumission
   submitButton.addEventListener("click", handleSubmit);
 
-  const buttonColorComplete = "#4CAF50"; // Exemple : vert
-  const buttonColorDefault = ""; // Exemple : bleu
+  const buttonColorComplete = "#1D6154"; // vert
+  const buttonColorDefault = "";
 // Fonction pour valider le formulaire
 function validateForm() {
   const fileInputValue = fileInput.value.trim();

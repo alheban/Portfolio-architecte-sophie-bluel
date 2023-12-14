@@ -610,7 +610,17 @@ select {
   appearance: none; /* Supprime la flèche déroulante par défaut sur certains navigateurs */
   background-image: url('icons/fleche-personnalisee.svg'); /* Ajoutez votre image personnalisée ici */
   background-repeat: no-repeat;
+  background-color: white;
   background-position: right 20px center; /* Ajustez la position de l'image */
+  padding: 15px; /* Ajoutez un espacement autour du texte */
+  font-size: 14px; /* Modifie la taille du texte */
+  color: #444; /* Modifie la couleur du texte */
+  font-family: "Work Sans";
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  height: auto; 
+
 }
 
 
