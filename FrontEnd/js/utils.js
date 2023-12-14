@@ -1,3 +1,4 @@
+import { divFiltre } from "./dom.js";
 
 export function createElement(args) {
   const element = document.createElement(args.tag);
@@ -38,4 +39,25 @@ export function createElement(args) {
       localStorage.removeItem("token");
     });
   }
+
+
+  // Fonction pour afficher mode editeur en verifiant le token
+  export function isAuthe() {
+    let token = localStorage.getItem("token");
+    const maDivBarreEdit = document.querySelector(".main_barre_edition");
+    const maDivBtnModif = document.querySelector(".btn_modifier");
+  
+    if (token === null) {
+      console.log("Aucun token trouvé dans le localStorage");
+      maDivBarreEdit.classList.add("none");
+      maDivBtnModif.classList.add("none");
+    } else {
+      console.log("Token présent :", token);
+      divFiltre.remove();
+      ajoutLogout();
+      maDivBarreEdit.classList.add("flex");
+      maDivBtnModif.classList.add("flex");
+    }
+  }
+
 
