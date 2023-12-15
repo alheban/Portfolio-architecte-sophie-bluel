@@ -6,17 +6,13 @@ import { sectionFiltre,sectionPortfolio,sectionModal,divFiltre,tousButton,apiIns
 /*------ section filtre boutons-----------------------*/
 
 sectionFiltre.insertBefore(divFiltre, sectionFiltre.children[1]);
-//Fonction pour creer btntous et afficher la galerie
-tousButton.addEventListener("click", (e) => {
-  e.preventDefault();
-  createProjectGallery(apiInstance.listeProjets);
-  activateButton(tousButton);
-});
-divFiltre.appendChild(tousButton);
-tousButton.classList.add("active");
 
+function handleFilterButtonClick(projects, button) {
+  createProjectGallery(sectionPortfolio, projects);
+  activateButton(button);
+}
 //Fonction pour creer btnCategorie et filtrer galerie
-function createAndActivateFilterButton(categorieName) {
+function createAndActivateFilterButton(categorieName, projects) {
   const btnFilter = createElement({
     tag: "button",
     text: categorieName,
@@ -26,35 +22,50 @@ function createAndActivateFilterButton(categorieName) {
 
   btnFilter.addEventListener("click", (event) => {
     event.preventDefault(); 
-    filterByCategory(categorieName);
-    activateButton(btnFilter);
+    handleFilterButtonClick(projects.filter((work) => work.category.name === categorieName),btnFilter
+      );
   });
   return btnFilter;
 }
 
 //Fonction pour filtrer les boutons par catégories sans doublons
-function filterButtons(apiInstance) {
+function filterButtons(apiInstance, projects) {
   // Créer un ensemble pour suivre les catégories déjà ajoutées
   const categoriesNameAjoutees = new Set();
-  apiInstance.listeProjets.forEach((workname) => {
+  projects.forEach((workname) => {
     const categorieName = workname.category.name;
     if (!categoriesNameAjoutees.has(categorieName)) {
-      const buttonFiltre = createAndActivateFilterButton(categorieName, apiInstance);
+      const buttonFiltre = createAndActivateFilterButton(categorieName, projects);
       divFiltre.appendChild(buttonFiltre);
       categoriesNameAjoutees.add(categorieName);
     }
   });
 }
 
-/* -----------------galerie principal ----------------------------------*/
-function filterByCategory(categorieName) {
-  const filteredProjects = apiInstance.listeProjets.filter(
-    (work) => work.category.name === categorieName);
-    createProjectGallery(filteredProjects);
+//Fonction pour creer btntous et afficher la galerie
+function activateBtnTous(projects) {
+  tousButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    handleFilterButtonClick(projects, tousButton);
+  });
+  divFiltre.appendChild(tousButton);
+  tousButton.classList.add("active");
 }
 
-function createProjectGallery(projetsgalerie) {
-  sectionPortfolio.innerHTML = ""; // Nettoyer la section de la galerie avant d'ajouter les nouveaux projets
+
+
+
+
+/* -----------------galerie principal ----------------------------------*/
+function filterByCategory(projects, categoryName) {
+  const filteredProjects = projects.filter((work) => work.category.name === categoryName);
+  if (filteredProjects.length > 0) {
+    createProjectGallery(filteredProjects);
+  } 
+}
+
+function createProjectGallery(section, projetsgalerie) {
+  section.innerHTML = ""; // Nettoyer la section de la galerie avant d'ajouter les nouveaux projets
   sectionModal.innerHTML = "";
 
   projetsgalerie.forEach((work) => {
@@ -62,7 +73,7 @@ function createProjectGallery(projetsgalerie) {
     const figureElement = createElement({
       tag: "figure",
       text: "",
-      whereAppend: sectionPortfolio,
+      whereAppend: section,
     });
 
     const imageElement = createElement({
@@ -84,15 +95,15 @@ function createProjectGallery(projetsgalerie) {
     }
     figureElement.appendChild(imageElement);
     figureElement.appendChild(figcaptionElement);
-    creerModal(work);
+    creerModal(sectionModal,work);
 })
 }
 /* -----------------galerie modal avec btn delete ----------------------------------*/
-function creerModal(work) {
+function creerModal(section, work) {
   const figureModalElement = createElement({
     tag: "figure",
     text: "",
-    whereAppend: sectionModal,
+    whereAppend: section,
   });
 
   const imageModalElement = createElement({
@@ -132,8 +143,9 @@ function creerModal(work) {
         if (success) {
           event.target.parentElement.remove();
           apiInstance.getWorksApi().then((projetsRecuperes) => {
-            createProjectGallery(projetsRecuperes);
+            createProjectGallery(sectionPortfolio, projetsRecuperes);
           });
+
         } else {
           console.error(`Échec de la suppression du travail avec l'ID ${idToDelete}.`);
         }
@@ -319,7 +331,7 @@ const modalTriggers = document.querySelectorAll(".modal-trigger");
         const projetsRecuperes = await apiInstance.getWorksApi();
   
         // Mise à jour de la galerie des projets avec les données récentes
-        createProjectGallery(projetsRecuperes);
+        createProjectGallery(sectionPortfolio,projetsRecuperes);
   
         // Réinitialisez le formulaire et l'état du label de fichier
         form.reset();
@@ -409,8 +421,9 @@ function validateForm() {
   }
 /* -----------------récupérer les projets depuis l'API ----------------------------------*/
 apiInstance.getWorksApi().then((projetsRecuperes) => {
-  createProjectGallery(projetsRecuperes);
-  filterButtons(apiInstance);
+  createProjectGallery(sectionPortfolio, projetsRecuperes);
+  activateBtnTous(projetsRecuperes);
+  filterButtons(apiInstance, projetsRecuperes);
   isAuthe();
 });
 
