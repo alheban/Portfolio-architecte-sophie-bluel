@@ -5,6 +5,9 @@ const passwordInput = document.getElementById("password");
 
 const apiInstance = new YourApiClass("http://localhost:5678/api");
 
+
+
+
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   const email = emailInput.value;
@@ -22,6 +25,8 @@ form.addEventListener("submit", async (event) => {
   }
 });
 
+
+
 function errorMessage() {
   const existingErrorMessage = passwordInput.nextElementSibling;
   if (!existingErrorMessage || !existingErrorMessage.classList.contains("errorMessage")) {
@@ -32,6 +37,20 @@ function errorMessage() {
     passwordInput.style.border = "2px solid red";
     emailInput.style.border = "2px solid red";
     passwordInput.parentNode.insertBefore(messageErreur, passwordInput.nextSibling);
+  }
+}
+
+// Ajoutez des écouteurs d'événements aux champs de saisie
+emailInput.addEventListener("input", clearErrorMessage);
+passwordInput.addEventListener("input", clearErrorMessage);
+
+function clearErrorMessage() {
+  const existingErrorMessage = passwordInput.nextElementSibling;
+
+  if (existingErrorMessage && existingErrorMessage.classList.contains("errorMessage")) {
+    existingErrorMessage.remove();
+    passwordInput.style.border = ""; 
+    emailInput.style.border = ""; 
   }
 }
 
