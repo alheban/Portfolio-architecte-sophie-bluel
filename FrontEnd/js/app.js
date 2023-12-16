@@ -96,6 +96,8 @@ function createProjectGallery(section, projetsgalerie) {
     figureElement.appendChild(imageElement);
     figureElement.appendChild(figcaptionElement);
     creerModal(sectionModal,work);
+    // Ajoutez le nouvel élément à la fin du conteneur
+    section.appendChild(figureElement);
 })
 }
 /* -----------------galerie modal avec btn delete ----------------------------------*/
@@ -156,6 +158,8 @@ function creerModal(section, work) {
       console.error("ID non défini. Impossible de supprimer.");
     }
   });
+  // Ajoutez le nouvel élément modal à la fin du conteneur
+  section.appendChild(figureModalElement);
 }
 
 /* -----------------Mode editeur ----------------------------------*/
@@ -178,6 +182,7 @@ const modalTriggers = document.querySelectorAll(".modal-trigger");
       afficherModal();
     } else {
       effacerModal();
+      resetLabelFile();
     }
   }
 
@@ -195,6 +200,8 @@ const modalTriggers = document.querySelectorAll(".modal-trigger");
 
     removeClass(modalAdd, "block");
     addClass(modalAdd, "none");
+
+    resetLabelFile();
   }
 
   const arrowModalElement = document.querySelector(".arrow-modal");
@@ -222,10 +229,18 @@ const modalTriggers = document.querySelectorAll(".modal-trigger");
   const submitButton = document.querySelector(".btn_valider_off");
 
   // Ajoutez des écouteurs d'événements aux champs du formulaire
-  fileInput.addEventListener("change", (e) => {
-    handleFileSelect(e);
+  fileInput.addEventListener("change", async (e) => {
+    // Supprimez le message d'erreur s'il existe
+    const formu = document.querySelector(".form_ajout_img");
+    const existingErrorMessage = formu.querySelector(".error-message");
+    if (existingErrorMessage) {
+      formu.removeChild(existingErrorMessage);
+    }
+  
+    await handleFileSelect(e);
     updateSubmitButtonState();
   });
+
   textInput.addEventListener("input", (e) => {
     handleTextInput(e);
     updateSubmitButtonState();
@@ -238,18 +253,26 @@ const modalTriggers = document.querySelectorAll(".modal-trigger");
   loadOptionsFromApi();
   /*--fileinput--*/
   let selectedFile;
-  async function handleFileSelect(event) {
-    selectedFile = event.target.files[0];
+async function handleFileSelect() {
+  selectedFile = fileInput.files[0];
 
-    if (selectedFile) {
-      try {
-        displaySelectedImage(selectedFile);
-      } catch (error) {
-        // Gérez les erreurs
-        console.error("Erreur lors du téléchargement du fichier :", error);
-      }
+  // Supprimer le message d'erreur s'il existe
+  const formu = document.querySelector(".form_ajout_img");
+  const existingErrorMessage = formu.querySelector(".error");
+
+  if (existingErrorMessage) {
+    existingErrorMessage.remove();
+  }
+
+  if (selectedFile) {
+    try {
+      displaySelectedImage(selectedFile);
+    } catch (error) {
+      // Gérez les erreurs
+      console.error("Erreur lors du téléchargement du fichier :", error);
     }
   }
+}
   function displaySelectedImage(file) {
     const imageElement = document.createElement("img");
     imageElement.classList.add("img_uploaded");
@@ -306,7 +329,7 @@ const modalTriggers = document.querySelectorAll(".modal-trigger");
       event.preventDefault();
   
       // Validez le formulaire
-      const isValidForm = validateForm();
+      const isValidForm = updateSubmitButtonState();
   
       if (!isValidForm) {
         return;
@@ -344,11 +367,11 @@ const modalTriggers = document.querySelectorAll(".modal-trigger");
   }
   // Ajoutez un écouteur d'événements au bouton de soumission
   submitButton.addEventListener("click", handleSubmit);
-
   const buttonColorComplete = "#1D6154"; // vert
   const buttonColorDefault = "";
+  
 // Fonction pour valider le formulaire
-function validateForm() {
+function updateSubmitButtonState() {
   const fileInputValue = fileInput.value.trim();
   const textInputValue = textInput.value.trim();
   const selectCategoriesValue = selectCategories.value;
@@ -360,55 +383,56 @@ function validateForm() {
     selectCategoriesValue !== "Sélectionnez une catégorie";
 
   if (!isFormComplete) {
-    // Affichez un message d'erreur
-    alert("Veuillez remplir tous les champs du formulaire.");
-
-    // Ajoutez un style ou un message d'erreur spécifique aux champs manquants
-    if (fileInputValue === "") {
-      fileInput.classList.add("error");
-    } else {
-      fileInput.classList.remove("error");
-    }
-
-    if (textInputValue === "") {
-      textInput.classList.add("error");
-    } else {
-      textInput.classList.remove("error");
-    }
-
-    if (selectCategoriesValue === "Sélectionnez une catégorie") {
-      selectCategories.classList.add("error");
-    } else {
-      selectCategories.classList.remove("error");
-    }
-
+    submitButton.disabled = true;
+    submitButton.style.backgroundColor = buttonColorDefault;
     return false;
   }
 
-  // Le formulaire est valide
-  return true;
-}
-  // Fonction pour activer ou désactiver le bouton en fonction de l'état du formulaire
-  function updateSubmitButtonState() {
-    const fileInputValue = fileInput.value.trim();
-    const textInputValue = textInput.value.trim();
-    const selectCategoriesValue = selectCategories.value;
+  // Vérifiez le format du fichier (par exemple, vérifiez l'extension)
+  const allowedFileExtensions = ["jpg", "jpeg", "png", "gif"]; // Ajoutez les extensions autorisées
+  const fileExtension = fileInputValue.split(".").pop().toLowerCase();
 
-    // Vérifiez si tous les champs sont remplis
-    const isFormComplete =
-      fileInputValue !== "" &&
-      textInputValue !== "" &&
-      selectCategoriesValue !== "Sélectionnez une catégorie";
-
-    // Activez ou désactivez le bouton en fonction du résultat
-    submitButton.disabled = !isFormComplete;
-    submitButton.style.backgroundColor = isFormComplete
-      ? buttonColorComplete
-      : buttonColorDefault;
-    console.log("Formulaire complet :", isFormComplete);
+  if (!allowedFileExtensions.includes(fileExtension)) {
+    // Le fichier n'a pas la bonne extension
+    const formu = document.querySelector(".form_ajout_img");
+    const messageErreur = document.createElement("p");
+    formu.appendChild(messageErreur);
+    messageErreur.innerText = "Format non pris en charge, merci de choisir une autre photo";
+    messageErreur.classList.add("error");
+    submitButton.disabled = true;
+    submitButton.style.backgroundColor = buttonColorDefault;
+    return false;
   }
 
+  // Vérifiez la taille du fichier
+  const maxFileSizeInBytes = 4000 * 1024; // 4 Mo
+  if (selectedFile.size > maxFileSizeInBytes) {
+    const formu = document.querySelector(".form_ajout_img");
+    // Si la taille du fichier dépasse 4 Mo, affichez un message d'erreur
+    const sizeImageErreur = document.createElement("p");
+    sizeImageErreur.innerText = "La taille de l'image ne doit pas dépasser 4 Mo";
+    sizeImageErreur.classList.add("error");
+    formu.appendChild(sizeImageErreur);
+    submitButton.disabled = true;
+    submitButton.style.backgroundColor = buttonColorDefault;
+    return false; // Le formulaire n'est pas valide
+  }
+
+  // Le formulaire est valide
+  submitButton.disabled = false;
+  submitButton.style.backgroundColor = buttonColorComplete;
+  return true;
+}
+
+
+
   function resetLabelFile() {
+    // Réinitialiser le message d'erreur s'il existe
+  const formu = document.querySelector(".form_ajout_img");
+  const existingErrorMessage = formu.querySelector(".error");
+  if (existingErrorMessage) {
+    existingErrorMessage.remove();
+  }
     labelFileAddPhoto.style.padding = "30px 0 0";
     labelFileAddPhoto.innerHTML = `
     <img src="assets/icons/icon_picture.svg" alt="">
