@@ -1,19 +1,18 @@
 
 import { isAuthe} from "./utils.js";
 import { sectionPortfolio,apiInstance,modalContainer,modal,modalAdd,arrowModalElement,boutonAjouterPhoto, insertDivFiltre} from "./dom.js";
-
+import { activateBtnTous, filterButtons } from "./filter.js";
+import {createProjectGallery} from "./gallery.js";
+import { handleModalTriggers,handleArrowModalElement,handleAjouterPhotoButton,afficherModal,effacerModal,toggleModal} from "./editor.js";
+import { initForm,updateSelectOptions} from "./form.js";
 
 /*------ section filtre boutons-----------------------*/
-import { activateBtnTous, filterButtons } from "./filter.js";
+
 insertDivFiltre()
-/* -----------------galerie principal ----------------------------------*/
-import {createProjectGallery} from "./gallery.js";
 
-/* -----------------Mode editeur ----------------------------------*/
-import { handleModalTriggers,handleArrowModalElement,handleAjouterPhotoButton,afficherModal,effacerModal,toggleModal} from "./editor.js";
 
-  /*------------formulaire ------------------*/
-  import { initForm,updateSelectOptions} from "./form.js";
+/*------------formulaire ------------------*/
+
 
 handleModalTriggers(modalContainer, modalAdd);
 handleArrowModalElement(arrowModalElement, modal, modalAdd);

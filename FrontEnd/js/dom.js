@@ -1,8 +1,16 @@
-import { createElement } from "./utils.js";
 import { YourApiClass } from "./api.js";
+import { createElement } from "./utils.js";
+
+
+/* -----------------API ----------------------------------*/
+export const apiInstance = new YourApiClass("http://localhost:5678/api");
+
+/* -----------------galerie principal ----------------------------------*/
 export const sectionFiltre = document.getElementById("portfolio");
 export const sectionPortfolio = document.querySelector(".gallery");
 export const sectionModal = document.querySelector(".galerie_modal");
+
+/*------ section filtre boutons-----------------------*/
 export const tousButton = createElement({
   tag: "button",
   text: "Tous",
@@ -15,16 +23,10 @@ export const divFiltre = createElement({
   className: "filtre",
   whereAppend: sectionFiltre,
 });
-
 export function insertDivFiltre() {
   sectionFiltre.insertBefore(divFiltre, sectionFiltre.children[1]);
 }
 
-
-
-export const apiInstance = new YourApiClass("http://localhost:5678/api");
-
-/* -----------------galerie principal ----------------------------------*/
 
 /* -----------------Mode editeur ----------------------------------*/
 export const modalContainer = document.querySelector(".modal-container");
@@ -33,7 +35,7 @@ export const modal = document.querySelector(".modal");
 export const arrowModalElement = document.querySelector(".arrow-modal");
 export const boutonAjouterPhoto = document.querySelector(".btn_ajouter_photo");
 
-/* -----------------formulaire odal ----------------------------------*/
+/* -----------------formulaire modal ----------------------------------*/
 export const fileInput = document.getElementById("file");
 export const textInput = document.getElementById("titre_img");
 export const selectCategories = document.getElementById("categories");

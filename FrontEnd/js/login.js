@@ -1,15 +1,12 @@
-import { YourApiClass } from './api.js';
 
-const form = document.querySelector("form");
+import { apiInstance} from "./dom.js";
+
+const formulaire = document.querySelector("form");
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
 
-const apiInstance = new YourApiClass("http://localhost:5678/api");
 
-
-
-
-form.addEventListener("submit", async (event) => {
+formulaire.addEventListener("submit", async (event) => {
   event.preventDefault();
   const email = emailInput.value;
   const password = passwordInput.value;
@@ -18,7 +15,7 @@ form.addEventListener("submit", async (event) => {
     const loginResult = await apiInstance.loginUser(email, password);
 
     if (loginResult.success) {
-      form.reset();
+      formulaire.reset();
       window.location.href = "index.html";
     }
   } catch (error) {
@@ -41,13 +38,9 @@ function errorMessage() {
   }
 }
 
-// Ajoutez des écouteurs d'événements aux champs de saisie
-emailInput.addEventListener("input", clearErrorMessage);
-passwordInput.addEventListener("input", clearErrorMessage);
 
 function clearErrorMessage() {
   const existingErrorMessage = passwordInput.nextElementSibling;
-
   if (existingErrorMessage && existingErrorMessage.classList.contains("errorMessage")) {
     existingErrorMessage.remove();
     passwordInput.style.border = ""; 
@@ -55,3 +48,9 @@ function clearErrorMessage() {
   }
 }
 
+function clearLabel(){
+  // Ajoutez des écouteurs d'événements aux champs de saisie
+  emailInput.addEventListener("input", clearErrorMessage);
+  passwordInput.addEventListener("input", clearErrorMessage);
+  }
+  clearLabel()
