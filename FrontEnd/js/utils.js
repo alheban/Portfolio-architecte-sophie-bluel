@@ -60,8 +60,6 @@ export function createElement(args) {
 
 
 /*------ section filtre boutons-----------------------*/
-
-
 //Fonction activer la classe "active" au bouton
 export function activateButton(bouton) {
   document
