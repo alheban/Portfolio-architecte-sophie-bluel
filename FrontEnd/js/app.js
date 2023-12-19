@@ -21,11 +21,18 @@ initForm();
 
 
 /* -----------------récupérer les projets depuis l'API ----------------------------------*/
-apiInstance.getWorksApi().then((projetsRecuperes) => {
-  createProjectGallery(sectionPortfolio, projetsRecuperes);
-  activateBtnTous(projetsRecuperes);
-  filterButtons(apiInstance, projetsRecuperes);
-  isAuthe();
-});
+async function fetchDataAndDisplay() {
+  try {
+    const projetsRecuperes = await apiInstance.getWorksApi();
+    createProjectGallery(sectionPortfolio, projetsRecuperes);
+    activateBtnTous(projetsRecuperes);
+    filterButtons(apiInstance, projetsRecuperes);
+    isAuthe();
+  } catch (error) {
+    console.error('Une erreur s\'est produite lors de la récupération des projets :', error);
+  }
+}
+
+fetchDataAndDisplay();
 
 

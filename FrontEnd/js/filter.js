@@ -31,7 +31,8 @@ export function filterButtons(apiInstance, projects) {
   const categoriesNameAjoutees = new Set();
   projects.forEach((workname) => {
     const categorieName = workname.category.name;
-    if (!categoriesNameAjoutees.has(categorieName)) {
+    // si categoriesNameAjoutees ne contient pas encore categorieName = true
+    if (!categoriesNameAjoutees.has(categorieName)) { 
       const buttonFiltre = createAndActivateFilterButton(categorieName, projects);
       divFiltre.appendChild(buttonFiltre);
       categoriesNameAjoutees.add(categorieName);
