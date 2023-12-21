@@ -1,5 +1,3 @@
-import { createProjectGallery } from "./gallery.js";
-import { createElement } from "./utils.js";
 import {
   sectionPortfolio,
   apiInstance,
@@ -12,6 +10,9 @@ import {
   buttonColorComplete,
   buttonColorDefault,
 } from "./dom.js";
+
+import { createProjectGallery } from "./gallery.js";
+import { createElement } from "./utils.js";
 import { afficherModal } from "./editor.js";
 
 export function removeErrorMessage(formu, errorClass) {
@@ -58,8 +59,6 @@ removeErrorMessage(formu, "error");
     try {
       displaySelectedImage(selectedFile);
     } catch (error) {
-      // Gérez les erreurs
-      console.error("Erreur lors du téléchargement du fichier :", error);
     }
   }
 }
@@ -77,7 +76,6 @@ export function displaySelectedImage(file) {
 /*--textinput--*/
 export function handleTextInput(event) {
   const textInputValue = textInput.value;
-  console.log("Données du textInput :", textInputValue);
 }
 /*--selectcategories--*/
 export function updateSelectOptions(categories) {
@@ -102,15 +100,10 @@ export async function loadOptionsFromApi() {
     const categories = await apiInstance.getCategoriesApi();
     updateSelectOptions(categories);
   } catch (error) {
-    console.error(
-      "Erreur lors du chargement des options depuis l'API :",
-      error
-    );
   }
 }
 export function handleSelectChange(event) {
   const selectedOption = event.target.value;
-  console.log("Option sélectionnée :", selectedOption);
 }
 /*--formulaire submit--*/
 // Fonction pour gérer la soumission de formulaire
@@ -131,12 +124,6 @@ export async function handleSubmit(event) {
     formData.append("title", textInput.value);
     formData.append("category", selectCategories.value);
 
-    console.log("Données avant envoi :", {
-      image: formData.get("image"),
-      title: formData.get("title"),
-      category: formData.get("category"),
-    });
-
     const data = await apiInstance.uploadFormDataToAPI(formData);
 
     if (data) {
@@ -153,7 +140,7 @@ export async function handleSubmit(event) {
       afficherModal();
     }
   } catch (error) {
-    console.error(error.message);
+
   }
 }
 

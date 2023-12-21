@@ -18,11 +18,10 @@ export class YourApiClass {
       this.listeProjets.length = 0;
       this.listeProjets.push(...data);
 
-      //console.log(this.listProjets);
+   
 
       return this.listeProjets;
     } catch (error) {
-      console.error("Erreur lors de la récupération des projets :", error);
       throw error;
     }
   }
@@ -40,11 +39,9 @@ export class YourApiClass {
       this.listeCategories.length = 0;
       this.listeCategories.push(...data);
 
-      //console.log(this.listProjets);
 
       return this.listeCategories;
     } catch (error) {
-      console.error("Erreur lors de la récupération des projets :", error);
       throw error;
     }
   }
@@ -59,14 +56,9 @@ export class YourApiClass {
 
       const data = await response.json();
 
-      console.log(data);
 
       return data;
     } catch (error) {
-      console.error(
-        "Une erreur s'est produite lors de la récupération des données :",
-        error
-      );
       throw error;
     }
   }
@@ -110,7 +102,6 @@ export class YourApiClass {
 async deleteWorksApi(idToDelete) {
   try {
     if (!idToDelete) {
-      console.error("L'ID à supprimer n'est pas valide.");
       return false;
     }
 
@@ -129,7 +120,6 @@ async deleteWorksApi(idToDelete) {
       document.location.href = "login.html"; 
     }
   } catch (error) {
-    console.error('Une erreur inattendue s\'est produite lors de la suppression du travail :', error);
     throw error;
   }
 }
@@ -157,5 +147,8 @@ async uploadFormDataToAPI(formData) {
 }
 
 }
+
+
+
 
 

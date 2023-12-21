@@ -46,11 +46,9 @@ export function createElement(args) {
     const maDivBtnModif = document.querySelector(".btn_modifier");
   
     if (token === null) {
-      console.log("Aucun token trouvé dans le localStorage");
       maDivBarreEdit.classList.add("none");
       maDivBtnModif.classList.add("none");
     } else {
-      console.log("Token présent :", token);
       divFiltre.remove();
       ajoutLogout();
       maDivBarreEdit.classList.add("flex");

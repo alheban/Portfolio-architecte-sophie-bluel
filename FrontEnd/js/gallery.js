@@ -81,6 +81,7 @@ export function creerModal(section, work) {
     }
   
     btnDeleteElement.addEventListener("click", async (event) => {
+      event.preventDefault();
       const idToDelete = event.currentTarget.getAttribute("data-id");
   
       if (idToDelete) {
@@ -88,19 +89,15 @@ export function creerModal(section, work) {
           const success = await apiInstance.deleteWorksApi(idToDelete);
   
           if (success) {
+
             event.target.parentElement.remove();
             apiInstance.getWorksApi().then((projetsRecuperes) => {
               createProjectGallery(sectionPortfolio, projetsRecuperes);
             });
   
-          } else {
-            console.error(`Échec de la suppression du travail avec l'ID ${idToDelete}.`);
-          }
+          } 
         } catch (error) {
-          console.error('Erreur lors de la suppression du travail :', error);
         }
-      } else {
-        console.error("ID non défini. Impossible de supprimer.");
       }
     });
     // Ajoutez le nouvel élément modal à la fin du conteneur

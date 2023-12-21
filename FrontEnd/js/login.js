@@ -1,4 +1,3 @@
-
 import { apiInstance} from "./dom.js";
 
 const formulaire = document.querySelector("form");
