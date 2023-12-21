@@ -140,6 +140,7 @@ export async function handleSubmit(event) {
     const data = await apiInstance.uploadFormDataToAPI(formData);
 
     if (data) {
+      
       // Après un POST réussi, récupérez les projets mis à jour
       const projetsRecuperes = await apiInstance.getWorksApi();
 

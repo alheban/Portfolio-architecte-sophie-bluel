@@ -20,19 +20,23 @@ handleAjouterPhotoButton(boutonAjouterPhoto, modal, modalAdd);
 initForm();
 
 
+
+
+
 /* -----------------récupérer les projets depuis l'API ----------------------------------*/
 async function fetchDataAndDisplay() {
   try {
-    const projetsRecuperes = await apiInstance.getWorksApi();
-    createProjectGallery(sectionPortfolio, projetsRecuperes);
-    activateBtnTous(projetsRecuperes);
-    filterButtons(apiInstance, projetsRecuperes);
-    isAuthe();
+      const projetsRecuperes = await apiInstance.getWorksApi();
+      createProjectGallery(sectionPortfolio, projetsRecuperes);
+      activateBtnTous(projetsRecuperes);
+      filterButtons(apiInstance, projetsRecuperes);
+      isAuthe();
+
+      // Résoudre la promesse lorsque les données sont chargées
+      return Promise.resolve();
   } catch (error) {
-    console.error('Une erreur s\'est produite lors de la récupération des projets :', error);
+      return Promise.reject(error);
   }
 }
 
-fetchDataAndDisplay();
-
-
+  fetchDataAndDisplay();
