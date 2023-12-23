@@ -65,3 +65,11 @@ export function activateButton(bouton) {
     .forEach((b) => b.classList.remove("active"));
   bouton.classList.add("active");
 }
+
+// Fonction pour déplacer la vue vers une ancre spécifique
+export function deplacerVersAncre(hash) {
+  const section = document.getElementById(hash.substring(1));
+  if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+  }
+}
