@@ -1,17 +1,11 @@
-import { isAuthe } from "./utils.js";
+import { isAuthe, deplacerVersAncre } from "./utils.js";
 import { sectionPortfolio, apiInstance, modalContainer, modal, modalAdd, arrowModalElement, boutonAjouterPhoto, insertDivFiltre } from "./dom.js";
 import { activateBtnTous, filterButtons } from "./filter.js";
 import { createProjectGallery } from "./gallery.js";
 import { handleModalTriggers, handleArrowModalElement, handleAjouterPhotoButton, afficherModal, effacerModal, toggleModal } from "./editor.js";
 import { initForm, updateSelectOptions } from "./form.js";
 
-// Fonction pour déplacer la vue vers une ancre spécifique
-function deplacerVersAncre(hash) {
-    const section = document.getElementById(hash.substring(1));
-    if (section) {
-        section.scrollIntoView({ behavior: "smooth" });
-    }
-}
+
 
 // Section filtre boutons
 insertDivFiltre();
